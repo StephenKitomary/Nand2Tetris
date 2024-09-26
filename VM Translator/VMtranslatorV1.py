@@ -39,5 +39,79 @@ def code_writer(output, command_type, elements, original_command):
 
     if command_type =="memory":
         operation, segment, index = elements[0], elements[1], elements[2]
+        if operation == "push":
+            output.write(push_command(segment, index))
+        elif operation =="pop":
+            output.write(pop_command(segment, index))
+    
+    elif command_type == "arithmetic":
+        output.write(arithmetic_command(elements[0]))
 
-§   §1``
+def push_command(segment, index):
+    if segment == "constant":
+        return f"@{index}\nD=A\n@SP\nA=M\nM=D\n@SP\nM=M+1\n"
+    else:
+        segment_map = {
+        "local": "LCL",
+        "argument": "ARG",
+        "this": "THIS",
+        "that": "THAT"
+    }
+        asm_segment = segment_map.get(segment)
+        return f"@{index}\nD=A\n@{asm_segment}\nA=M+D\nD=M\n@{asm_segment}\nA=M\nM=D\n@SP\nM=M+1\n"
+
+    
+    return ""
+
+
+def pop_command(segment, index):
+    segment_map = {
+        "local": "LCL",
+        "argument": "ARG",
+        "this": "THIS",
+        "that": "THAT"
+    }
+    asm_segment = segment_map.get(segment)
+
+    return f"@{index}\nD=A\n@{asm_segment}\nD=D+M\n@SP\nA=M\nM=D\n@SP\nA=M-1\nD=M\n@SP\nA=M\nA=M\nM=D\n@SP\nM=M-1\n"  
+
+def arithmetic_command(operation):
+    
+    if operation == "add":
+        return "@SP\nAM=M-1\nD=M\nA=A-1\nM=M+D\n"
+    elif operation == "sub":
+        return "@SP\nAM=M-1\nD=M\nA=A-1\nM=M-D\n"
+    elif operation == "neg":
+        return "@SP\nA=M\nA=A-1\nM=-M\n"
+    elif operation == "and":
+        return "@SP\nAM=M-1\nD=M\nA=A-1\nM=D&M\n"
+    elif operation == "or":
+        return "@SP\nAM=M-1\nD=M\nA=A-1\nM=D|M\n"
+    elif operation == "not":
+        return "@SP\nA=M-1\nM=!M\n"
+    elif operation == "eq":
+        return eq_command()
+    elif operation == "gt":
+        return gt_command()
+    elif operation == "lt":
+        return lt_command()
+    
+    return ""
+
+# Just for layout, writting all the big/long functions here as separate functions that will get called inside the arithmetic_command function
+def eq_command():
+    return ("@SP\nAM=M-1\nD=M\n@SP\nAM=M-1\nD=M-D\n"
+            "@ISTRUE\nD;JEQ\nD=0\n@ISFALSE\n0;JMP\n"
+            "(ISTRUE)\nD=-1\n(ISFALSE)\n@SP\nA=M\nM=D\n@SP\nM=M+1\n")
+def gt_command():
+    return ("@SP\nAM=M-1\nD=M\n@SP\nAM=M-1\nD=M-D\n"
+            "@ISTRUE\nD;JGT\nD=0\n@ISFALSE\n0;JMP\n"
+            "(ISTRUE)\nD=-1\n(ISFALSE)\n@SP\nA=M\nM=D\n@SP\nM=M+1\n")
+def lt_command():
+    return ("@SP\nAM=M-1\nD=M\n@SP\nAM=M-1\nD=M-D\n"
+            "@ISTRUE\nD;JLT\nD=0\n@ISFALSE\n0;JMP\n"
+            "(ISTRUE)\nD=-1\n(ISFALSE)\n@SP\nA=M\nM=D\n@SP\nM=M+1\n")
+
+# run the main process
+if __name__ == "__main__":
+    main()
