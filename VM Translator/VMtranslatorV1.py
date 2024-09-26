@@ -20,6 +20,7 @@ def main():
 
     print("Translation has been completed")
  #Lets create a parser function that takes a single line as command and splits it into its elements
+ 
  def parser(command):
     elements = command.split()
     # lets determine if the command is either a memory segmentation command or an Arithmentic command or an invalid command for now,
