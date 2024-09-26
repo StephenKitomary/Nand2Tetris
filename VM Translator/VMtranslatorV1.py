@@ -21,7 +21,7 @@ def main():
     print("Translation has been completed")
  #Lets create a parser function that takes a single line as command and splits it into its elements
  
- def parser(command):
+def parser(command):
     elements = command.split()
     # lets determine if the command is either a memory segmentation command or an Arithmentic command or an invalid command for now,
     # later should modify this to take in Branching commands 
@@ -36,7 +36,7 @@ def main():
 
 def code_writer(output, command_type, elements, original_command):
     #lets first write a comment that is the VM command on top before the ASM code, will be helpful in troubleshooting
-    output.write("// {original_command}\n")
+    output.write(f"//{original_command}\n")
 
     if command_type =="memory":
         operation, segment, index = elements[0], elements[1], elements[2]
@@ -47,7 +47,7 @@ def code_writer(output, command_type, elements, original_command):
     
     elif command_type == "arithmetic":
         output.write(arithmetic_command(elements[0]))
-
+#here goes our push command operations, universal for all segment types except constant
 def push_command(segment, index):
     if segment == "constant":
         return f"@{index}\nD=A\n@SP\nA=M\nM=D\n@SP\nM=M+1\n"
@@ -64,7 +64,7 @@ def push_command(segment, index):
     
     return ""
 
-
+#here goes our pop command operations
 def pop_command(segment, index):
     segment_map = {
         "local": "LCL",
@@ -75,7 +75,7 @@ def pop_command(segment, index):
     asm_segment = segment_map.get(segment)
 
     return f"@{index}\nD=A\n@{asm_segment}\nD=D+M\n@SP\nA=M\nM=D\n@SP\nA=M-1\nD=M\n@SP\nA=M\nA=M\nM=D\n@SP\nM=M-1\n"  
-
+#here goes our arithmetic operations translations
 def arithmetic_command(operation):
     
     if operation == "add":
@@ -113,6 +113,6 @@ def lt_command():
             "@ISTRUE\nD;JLT\nD=0\n@ISFALSE\n0;JMP\n"
             "(ISTRUE)\nD=-1\n(ISFALSE)\n@SP\nA=M\nM=D\n@SP\nM=M+1\n")
 
-# run the main process
+#main process
 if __name__ == "__main__":
     main()
