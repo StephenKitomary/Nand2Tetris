@@ -4,7 +4,6 @@ def main():
     input_file = input("Enter the finename that you want to translate (Case Sensitive): ")
     vm_file = input_file + ".vm"
     asm_file = input_file + ".asm"
-
     #lets first check if the type file name really exists
     if not os.path.isfile(vm_file):
         raise FileNotFoundError("The file you specified does not exist, please make sure it exists in the same directory as this code")
