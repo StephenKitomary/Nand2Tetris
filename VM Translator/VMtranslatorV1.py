@@ -130,8 +130,10 @@ def call_function():# still have to figure out way to get the return adress
             "@SP\nD=M\n@LCL\nM=D"
             f"@5\nD=D-A\n@{n_args}\nD=D-A\n@ARD\nM=D\n"
             f"@{function_name}\n0;JMP\n({return_address})")
-def function_function():""
-    return ("")
+def function_function():
+    for i in range(int(n_vars)):
+            ["@SP", "A=M", "M=0", "@SP", "M=M+1"]
+    return (f"({function_name})")
 
 
 #main process
