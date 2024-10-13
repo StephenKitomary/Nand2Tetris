@@ -112,6 +112,21 @@ def lt_command():
             "@ISTRUE\nD;JLT\nD=0\n@ISFALSE\n0;JMP\n"
             "(ISTRUE)\nD=-1\n(ISFALSE)\n@SP\nA=M\nM=D\n@SP\nM=M+1\n")
 
+def return_command():
+    return ("@LCL\nD=M\n@R13\nM=D\n@5\nA=D-A\nD=M\n"
+            "@R14\nM=D\n@SP\nM=M-1\nA=M\nD=M\n@ARG\nA=M\nM=D\n"
+            "@ARG\n \n@SP\nM=D+1\n"
+            "@R13\nM=M-1\nA=M\nD=M\n@THAT\nM=D\n"
+            "@R13\nM=M-1\nA=M\nD=M\n@THIS\nM=D\n"
+            "@R13\nM=M-1\nA=M\nD=M\n@ARG\nM=D\n"
+            "@R13\nM=M-1\nA=M\nD=M\n@LCL\nM=D\n"
+            "@R14\nA=M\nO;JMP\n")
+def call_function():
+    return 
+def function_function():
+    return
+
+
 #main process
 if __name__ == "__main__":
     main()
