@@ -121,10 +121,17 @@ def return_command():
             "@R13\nM=M-1\nA=M\nD=M\n@ARG\nM=D\n"
             "@R13\nM=M-1\nA=M\nD=M\n@LCL\nM=D\n"
             "@R14\nA=M\nO;JMP\n")
-def call_function():
-    return 
-def function_function():
-    return
+def call_function():# still have to figure out way to get the return adress
+    return (f"@{return_address}\nD=A\n@SP\nM=D\n@SP\nM=M+1\n"
+            "@LCL\nD=M\n@SP\nA=M\nM=D\n@SP\nM=M+1\n"
+            "@ARG\nD=M\n@SP\nA=M\nM=D\n@SP\nM=M+1\n"
+            "@THIS\nD=M\n@SP\nA=M\nM=D\n@SP\nM=M+1\n"
+            "@THAT\nD=M\n@SP\nA=M\nM=D\n@SP\nM=M+1\n"
+            "@SP\nD=M\n@LCL\nM=D"
+            f"@5\nD=D-A\n@{n_args}\nD=D-A\n@ARD\nM=D\n"
+            f"@{function_name}\n0;JMP\n({return_address})")
+def function_function():""
+    return ("")
 
 
 #main process
