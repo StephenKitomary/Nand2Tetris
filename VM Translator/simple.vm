@@ -1,7 +1,7 @@
 function SimpleAdd 0
 
-push arg 0
-push arg 1
+push argument 0
+push argument 1
 add
 pop argument 0
 return
