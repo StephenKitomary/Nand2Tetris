@@ -156,7 +156,7 @@ def pop_command(segment, index):
 def arithmetic_command(operation):
     
     if operation == "add":
-        return "@SP\nAM=M-1\nD=M\nA=A-1\nM=D+M\n"
+        return "@SP\nAM=M-1\nD=M\nA=A-1\nM=M+D\n"
     elif operation == "sub":
         return "@SP\nAM=M-1\nD=M\nA=A-1\nM=M-D\n"
     elif operation == "neg":
