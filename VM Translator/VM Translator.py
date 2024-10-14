@@ -137,7 +137,7 @@ def pop_command(segment, index):
         }
         asm_segment = segment_map[segment]
         return (
-            f"@{index}\nD=A\n@{asm_segment}\nD=D+M\n@R13\nM=D\n"  
+            f"@{index}\nD=A\n@{asm_segment}\nD=M+D\n@R13\nM=D\n"  
             "@SP\nAM=M-1\nD=M\n@R13\nA=M\nM=D\n"                  
         )
 
